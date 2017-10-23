@@ -1,0 +1,34 @@
+s = audioread('voix.wav');
+fe = 44100;
+t = 0:1/fe:(length(s)-1)*1/fe;
+subplot(221);
+plot(t,s(:,1));
+disp(length(s(:,1)));
+hold on;
+title('Chronogramme enregistré.');
+xlabel('t(s)');
+ylabel('Signal');
+subplot(222);
+y_8 = quantifie(s(:,1), 8);
+plot(t, y_8, '.');
+title('Signal quantifié 8 bits.');
+xlabel('t(s)');
+ylabel('Signal');
+
+subplot(223);
+y_3 = quantifie(s(:,1), 3);
+plot(t, y_3, '.');
+title('Signal quantifié 3 bits.');
+xlabel('t(s)');
+ylabel('Signal');
+subplot(224);
+y_2 = quantifie(s(:,1), 2);
+plot(t, y_2, '.');
+title('Signal quantifié 2 bits.');
+xlabel('t(s)');
+ylabel('Signal');
+
+% sound(s, 44100);
+% sound(y_8, 44100);
+% sound(y_3, 44100);
+% sound(y_2, 44100);

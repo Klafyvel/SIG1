@@ -1,0 +1,205 @@
+%The MIT License (MIT)
+%
+%Copyright (c) 2016 Hugo LEVY-FALK
+%
+%Permission is hereby granted, free of charge, to any person obtaining a copy
+%of this software and associated documentation files (the "Software"), to deal
+%in the Software without restriction, including without limitation the rights
+%to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%copies of the Software, and to permit persons to whom the Software is
+%furnished to do so, subject to the following conditions:
+%
+%The above copyright notice and this permission notice shall be included in all
+%copies or substantial portions of the Software.
+%
+%THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+%SOFTWARE.
+
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{MyPack2}
+
+
+
+%%%%%%%% OPTIONS %%%%%%%%%
+\newif\if@french \@frenchtrue
+\DeclareOption{french}{\@frenchtrue}
+\DeclareOption*{}%% Ne rien faire quand une option est inconnue
+\ProcessOptions
+
+%%%%%%%% INCLUSIONS GÉNÉRALES %%%%%%%%%
+
+\RequirePackage{amsfonts}
+\RequirePackage{titlesec}
+\RequirePackage{fontspec}
+\RequirePackage{amssymb, amsmath, mathtools}
+\RequirePackage{babel}
+\RequirePackage{color}
+\RequirePackage[a4paper]{geometry}
+\RequirePackage[font=small,format=plain,labelfont=bf,up,
+    textfont=normal,up,
+    justification=justified,
+    singlelinecheck=false]{caption}
+\RequirePackage[justification=centering]{caption}
+\RequirePackage{xcolor} % Required for specifying custom colours
+\definecolor{grey}{rgb}{0.9,0.9,0.9} % Colour of the box surrounding the title
+\RequirePackage[utf8]{inputenc} % Required for inputting international characters
+\RequirePackage[sfdefault]{ClearSans} % Use the Clear Sans font (sans serif)
+\RequirePackage{placeins}
+
+
+
+\definecolor{bleu}{RGB}{0,100,143}
+\definecolor{gris}{RGB}{130,130,140}
+\definecolor{grisBleu}{RGB}{65,115,141}
+
+
+
+%%%%%%%% MATH %%%%%%%%%
+\RequirePackage{stmaryrd}
+\newcommand*\intervalleEntier[2]{\intervalle{\llbracket}{#1}{#2}{\rrbracket}}
+\newcommand*\intervalle[4]{\left#1 #2 \, ; #3 \right#4}
+\newcommand*\intervalleOO[2]{\intervalle{]}{#1}{#2}{[}}
+\newcommand*\intervalleFF[2]{\intervalle{[}{#1}{#2}{]}}
+\newcommand*\intervalleOF[2]{\intervalle{]}{#1}{#2}{]}}
+\newcommand*\intervalleFO[2]{\intervalle{[}{#1}{#2}{[}}
+
+\let\ensembleNombre\mathbb
+\newcommand*\N{\ensembleNombre{N}}
+\newcommand*\Z{\ensembleNombre{Z}}
+\newcommand*\Q{\ensembleNombre{Q}}
+\newcommand*\R{\ensembleNombre{R}}
+\newcommand*\C{\ensembleNombre{C}}
+
+\newcommand*\enstq[2]{\left\{#1,\; #2\right\}}
+
+%\newcommand*\int[1]{\left\lfloor #1\right\rfloor}
+%\newcommand*\norme[1]{\left\lVert#1\right\rVert}
+%\newcommand*\abs[1]{\left\lvert#1\right\rvert}
+
+\let\vecteur\overrightarrow
+
+\newcommand*\Sys[1]{\left\{ \begin{aligned} #1 \end{aligned} \right. \kern-\nulldelimiterspace}
+
+\newcommand*\application[5]{
+	#1 \colon
+	\begin{alignedat}{2} &#2 &\to &#3\\
+	                     &#4 &\mapsto &#5
+	\end{alignedat}
+}
+\newcommand*\applicationSigne[3]{
+	#1 \colon #2 \to #3
+}
+
+\newtheorem{defi}{Définition}[section]
+\newtheorem{theo}{Théorème}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{ex}{Exemple}[section]
+
+%%%%%%%% ALGORITHME %%%%%%%%%
+
+\if@french
+	\RequirePackage[frenchkw]{algorithm2e}
+
+	\SetKwInput{Donnees}{Données}
+	\SetKwInput{Res}{Résultat}
+	\SetKwInput{Entree}{Entrées}
+	\SetKwInput{Sortie}{Sorties}
+	\SetKw{KwA}{à}
+	\SetKw{Retour}{retourner}
+	\SetKwBlock{Deb}{début}{fin}
+	\SetKwIF{Si}{SinonSi}{Sinon}{si}{alors}{sinon si}{alors}{finsi}
+	\SetKwSwitch{Suivant}{Cas}{Autre}{suivant}{faire}{cas où}{autres cas}{fin cas}{fin d'alternative}
+	\SetKwFor{Pour}{pour}{faire}{finpour}
+	\SetKwFor{Tq}{tant que}{faire}{fintq}
+	\SetKwFor{PourCh}{pour chaque}{faire}{finprch}
+	\SetKwFor{PourTous}{pour tous}{faire}{finprts}
+	\SetKwRepeat{Repeter}{répéter}{jusqu'à}
+\else
+	\RequirePackage{algorithm2e}
+\fi
+
+%%%%%%%% SECTIONNEMENT %%%%%%%%%
+
+%\renewcommand{\thesection}{\Roman{section}}
+%\renewcommand{\thesubsection}{\arabic{subsection}}
+
+
+%%%%%%%% INTIALISATION DE LA PAGE %%%%%%%%%
+\RequirePackage{fancyhdr}
+\newcommand\initPage[3]{
+        \pagestyle{fancy}
+        \fancyhead{#1}
+        \lhead{#2}
+        \rhead{#3}
+        \rfoot{}
+        \lfoot{}
+
+        \titleformat*{\section}{\Large\bfseries\color{bleu}}
+        \titleformat*{\subsection}{\large\bfseries\color{grisBleu}}
+        \titleformat*{\subsubsection}{\bfseries\color{gris}}
+        \titlespacing*{\section}{-3em}{*1}{*1}
+        \titlespacing*{\subsection}{-2em}{*1}{*1}
+        \titlespacing*{\subsubsection}{-1em}{*1}{*1}
+
+}
+
+%%%%%%%% TITRE %%%%%%%%M
+\renewcommand{\maketitle}{
+\begin{titlepage} % Suppresses displaying the page number on the title page and the subsequent page counts as page 1
+	%------------------------------------------------
+	%	Grey title box
+	%------------------------------------------------
+  \topskip0pt
+  \vspace*{5cm}
+	\colorbox{grey}{
+		\parbox[t]{0.93\textwidth}{ % Outer full width box
+			\parbox[t]{0.91\textwidth}{ % Inner box for inner right text margin
+				\raggedleft % Right align the text
+				\fontsize{50pt}{80pt}\selectfont % Title font size, the first argument is the font size and the second is the line spacing, adjust depending on title length
+				\vspace{0.7cm} % Space between the start of the title and the top of the grey box
+
+				\@title \\
+
+				\vspace{0.7cm} % Space between the end of the title and the bottom of the grey box
+			}
+		}
+	}
+
+	\vfill % Space between the title box and author information
+
+	%------------------------------------------------
+	%	Author name and information
+	%------------------------------------------------
+
+	\parbox[t]{0.93\textwidth}{ % Box to inset this section slightly
+		\raggedleft % Right align the text
+		\large % Increase the font size
+		{\Large \@author}\\[4pt] % Extra space after name
+
+		\hfill\rule{0.2\linewidth}{1pt}% Horizontal line, first argument width, second thickness
+	}
+
+\end{titlepage}
+
+}
+
+
+
+%%%%%%%% FIN DU DOCUMENT %%%%%%%%%
+
+\newcommand{\roadMap}{
+	\clearpage
+	\listoffigures
+	\clearpage
+	\listoftables
+}
+
+% Fin du package
+\endinput

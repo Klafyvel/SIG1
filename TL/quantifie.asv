@@ -1,0 +1,19 @@
+% function sig_quant = quantifie(X, n_bit)
+% quantifie sur n bits le signal X.
+% Avec m le min du signal, M son max, on pose s1 = \frac{X - c}{d}
+% on a sig_quant = (floor(\frac{s1}{q}) + 1/2) * q*d + c
+% Exemples d'utilisation:
+% quantifie = quantifie([1,2,3,1,2,3], 8);
+
+function sig_quant = quantifie(X, n_bit)
+    m = min(X);
+    M = max(X);
+    c = (m+M)/2;
+    d = M-m;
+    s1 = (X - c) / d;
+    q = 1 / (2 ^ n_bit);
+    Q = [q/2 : q : 1 - q/2];
+    %sig_quant =(floor((X - c)/(d*q) + 1/2))*q*d + c ;
+    for i = 1:length(Q)
+        
+end
