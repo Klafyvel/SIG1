@@ -1,47 +1,65 @@
+\documentclass[french]{article}
+
+\usepackage{MyPack2}
+\geometry{top=2cm, bottom=2cm, left=3cm, right=3cm}
+\title{\bsc{SIG} 1}
+\author{Binôme A11 \\ \bsc{Simon} Léo, \bsc{Levy--Falk} Hugo}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+\listoffigures
 \newpage
-\initPage{TL - SIG1}{\today}{SIMON, LEVY-FALK}
 
-# Opérations de base sur les signaux
+\initPage{TL - SIG1}{\today}{\bsc{Simon}, \bsc{Levy--Falk}}
 
-## Signal numérique de synthèse
+\part{Opérations de base sur les signaux}
+
+\section{Signal numérique de synthèse}
+
 Notre objectif  est de définir quelques fonctions de calcul de base sur les signaux afin de découvrir les outils de Matlab.
 
-### Génération du signal
-Tout d'abord, nous avons cherché à générer un signal sinusoïdal et à l'échantillonner avant de tracer son graphe. Après avoir effectué quelques tracés, nous avons également pu mettre en évidence le théorème de Niquist-Shannon.
+\subsection{Génération du signal}
+
+Tout d'abord, nous avons cherché à générer un signal sinusoïdal et à l'échantillonner avant de tracer son graphe. Après avoir effectué quelques tracés, nous avons également pu mettre en évidence le théorème de Niquist-Shannon. La figure \ref{signalSin} montre le résultat obtenu pour une fréquence d'échantillonage de 50 Hz, une fréquence de 4 Hz et N=25.
 
 \begin{figure}[h!]
 \centering
 \includegraphics{images/signalSinus.eps}
 \caption{Signal sinusoïdal généré.}
+\label{signalSin}
 \end{figure}
 
-### Énergie et puissance
+\subsection{ Énergie et puissance}
 
-Dans le but de calculer l'énergie d'un signal sans utiliser `for`, nous avons effectué un produit terme à terme et utilisé l'outil `sum`. Une manière encore plus efficace de procéder aurait été de réaliser le produit entre le vecteur donné en entrée et sa transposée. Nous avons ensuite calculé la puissance moyenne de manière théorique, en utilisant l'identité :
+Dans le but de calculer l'énergie d'un signal sans utiliser \verb`for`, nous avons effectué un produit terme à terme et utilisé l'outil \verb`sum`. Une manière encore plus efficace de procéder aurait été de réaliser le produit entre le vecteur donné en entrée et sa transposée. Nous avons ensuite calculé la puissance moyenne de manière théorique, en utilisant l'identité :
 
 \[
-\sin²(x)=\frac {1-\cos(2x)} {2}
+\sin^2(x)=\frac {1-\cos(2x)} {2}
 \]
 
 on obtient
 \[
-\frac{1} {2 \pi} \int_{0}^{2 \pi} \sin²(x) \mathrm{d}x = 1/2
+\frac{1} {2 \pi} \int_{0}^{2 \pi} \sin^2(x) \mathrm{d}x = 1/2
 \]
 
 Par ailleurs, nous avons estimé la puissance de notre signal en utilisant la fonction puissance qui effectue la somme du produit terme à terme du signal et divise par la longueur de ce signal.
 
-```matlab
+\lstset{language=matlab}
+\begin{lstlisting}
 >> s = sig1_sinus(4, 50, 2*50/4);
 >> puissance(s)
 
 ans =
 
     0.5000
-```
+\end{lstlisting}
 
 On obtient un résultat conforme au calcul réalisé.
 
-### Quantification
+\subsection{ Quantification}
 
 Pour quantifier un signal sur N bits, on commence par le centrer en 0 et le borner entre -0.5 et 0.5 à l'aide d'une première homothétie. Soit $s_1$ le signal ainsi obtenu. On réalise ensuite la quantification. Si $N > 0$ est le nombre de bit de quantification, on pose $q=\frac{1}{2^N}$. Dans un premier temps, on pose $s_2$ tel que :
 \[
@@ -60,7 +78,8 @@ Ce qui est incohérent avec le signal original. Une solution est de poser :
 
 Il ne reste plus qu'à remettre la fonction à l'échelle. On obtient le code suivant :
 
-```matlab
+\lstset{language=matlab}
+\begin{lstlisting}
 function sig_quant = quantifie(X, n_bit)
     m = min(X);
     M = max(X);
@@ -70,8 +89,8 @@ function sig_quant = quantifie(X, n_bit)
     s1 = (X - c)/d;
     sig_quant = min((floor(s1/q) + 1/2) * q, 1/2-q/2)*d + c;
 end
-```
-En appliquant la fonction `quantifie` pour $N=3$ et $N=8$ à un signal généré grâce à la fonction écrite dans la partie 1, on obtient la figure \ref{signalBruit}.
+\end{lstlisting}
+En appliquant la fonction \verb`quantifie` pour $N=3$ et $N=8$ à un signal généré grâce à la fonction écrite dans la partie 1, on obtient la figure \ref{signalBruit}. On peut noter qu'il est difficile de différencier le signal d'entrée du signal quantifié sur 8 bits. La figure \ref{signalBruit2} montre offre un zoom qui permet de différencier le signal de la quantification.
 
 \begin{figure}[h!]
 \centering
@@ -79,26 +98,33 @@ En appliquant la fonction `quantifie` pour $N=3$ et $N=8$ à un signal généré
 \caption{Quantification du signal sinusoïdal généré.}
 \label{signalBruit}
 \end{figure}
+\begin{figure}[h!]
+	\centering
+	\includegraphics{images/signalBruit1.eps}
+	\caption{Quantification du signal sinusoïdal généré - zoom.}
+	\label{signalBruit2}
+\end{figure}
 
-\FloatBarrier
+%\FloatBarrier
 
 Pour déterminer le bruit de quantification, on calcule la différence entre le signal d'origine et le signal quantifié, et on en détermine l'énergie. On calcule également la valeur théorique du bruit de quantification. On obtient
 
-    - pour 8 bits, $4.6464 \times 10^{-6}$, pour une valeur théorique de $1.272 \times 10^{-6}$;
-    - pour 3 bits, $0.0063$, pour une valeur théorique de $0.0013$.
-
+\begin{itemize}
+	\item pour 8 bits, $4.6464 \times 10^{-6}$, pour une valeur théorique de $1.272 \times 10^{-6}$;
+	\item pour 3 bits, $0.0063$, pour une valeur théorique de $0.0013$.
+\end{itemize}
 
 On remarque que l'échantillonnage à 8 bits est bien plus efficace, bien que la valeur théorique soit plus faible que celle calculée.
 
-## Signal audio
+\section{ Signal audio}
 
-### Restitution
+\subsection{ Restitution}
 
 En écoutant le signal enregistré à différentes fréquences de restitutions, on remarque que augmenter cette fréquence diminue la durée de la restitution et décale les fréquences de l'enregistrement vers des fréquences plus hautes. Inversement, diminuer la fréquence de restitution augmente la durée de l'enregistrement tout en déplaçant les fréquences des sons de l'enregistrement vers les graves.
 
-### Quantification
+\subsection{ Quantification}
 
-A l'aide de la fonction `quantifie` réalisée dans la partie précédente, on réalise la quantification du signal enregistré. On observe que plus le nombre de bits de quantification est faible, plus le bruit (à l'écoute) est important.
+A l'aide de la fonction \verb`quantifie` réalisée dans la partie précédente, on réalise la quantification du signal enregistré. On observe que plus le nombre de bits de quantification est faible, plus le bruit (à l'écoute) est important.
 
 Les figures \ref{sonQuantifie1} et \ref{sonQuantifie2} donnent une représentation graphiques de différentes quantification du signal vocal.
 
@@ -116,10 +142,11 @@ Les figures \ref{sonQuantifie1} et \ref{sonQuantifie2} donnent une représentati
 \label{sonQuantifie2}
 \end{figure}
 
-\FloatBarrier
+%\FloatBarrier
 \newpage
-# Classification des signaux
-## Exemple de calcul théorique
+\part{ Classification des signaux}
+
+\section{ Exemple de calcul théorique}
 
 Pour le signal $y(t) = A \sin(2 \pi f t)$ on a :
 
@@ -130,10 +157,11 @@ Pour le signal $y(t) = A \sin(2 \pi f t)$ on a :
 
 On obtient la fonction d'autocorrélation suivante :
 \[
-\gamma_y (t) = \frac{A²} {2f} cos(2 \pi f t)
+\gamma_y (t) = \frac{A^2} {2f} cos(2 \pi f t)
 \]
 
-## Programmation
+\section{ Programmation}
+
 On calcule l'autocorrélation avec la formule suivante :
 
 \[
@@ -141,27 +169,26 @@ On calcule l'autocorrélation avec la formule suivante :
 \]
 
 \begin{figure}[h!]
-\centering
-\includegraphics{images/autocorr.eps}
-\caption{Comparatif de de la fonction xcorr et de notre implémentation de l'autocorrélation.}
-\label{autocorr}
+	\centering
+	\includegraphics{images/autocorr.eps}
+	\caption{Comparatif de de la fonction xcorr et de notre implémentation de l'autocorrélation.}
+	\label{autocorr}
 \end{figure}
 
-La figure \ref{autocorr} montre que le résultat de `xcorr` et de notre implémentation de l'autocorrélation sont identiques.
-
+La figure \ref{autocorr} montre que le résultat de \verb`xcorr` et de notre implémentation de l'autocorrélation sont identiques.
 
 Nous n'avions d'abord tracé que la partie positive, avant de nous rendre compte de la nécessité de tracer également la partie négative.
 On obtient un résultat du résultat théorique car le support de notre signal est fini, ce qui donne un cosinus amorti de manière symétrique et non un simple cosinus.
 
-## Application à la classification de quelques signaux simples
+\section{ Application à la classification de quelques signaux simples}
 
 Lorsque le signal se "répète" au cours du temps son autocorrélation est semblable sur de courtes périodes (reproduction du même motif au cours des périodes), on dit alors que le signal est stationnaire. Par contre si son autocorrélation est presque nulle, cela veut dire qu'il n'y a pas reproduction des motifs au cour des périodes et donc que le signal est non stationnaire.
 
 \begin{figure}[h!]
-\centering
-\includegraphics[width=\textwidth]{images/classificationSig.eps}
-\caption{Autocorrélation de plusieurs signaux.}
-\label{classifSig}
+	\centering
+	\includegraphics[width=1\textwidth]{images/classificationSig.eps}
+	\caption{Autocorrélation de plusieurs signaux.}
+	\label{classifSig}
 \end{figure}
 
 La figure \ref{classifSig} montre que les signaux sinusoïdaux et triangulaires sont stationnaires, contrairement au signal du bruit.
@@ -177,7 +204,7 @@ La figure \ref{classifAh} montre que le signal vocal est quasi-stationnaire. En 
 
 \FloatBarrier
 
-## Classification de signaux de parole voisés ou non voisés
+\section{ Classification de signaux de parole voisés ou non voisés}
 
 D'après les résultats de la section précédente, on peut différencier un signal de parole voisé d'un non voisé en visualisant l'autocorrélation. En effet un signal non voisé est constitué de bruit et devrait présenter une autocorrélation faible, et non périodique. Se pose alors la question de la longueur des échantillons sur lesquels on calcule l'autocorrélation. Nous avons essayé les durées 0.01, 0.06, 0.16 et 0.64 secondes.
 
@@ -197,11 +224,16 @@ La figure \ref{classif1} montre que des échantillons de durée 0.01 secondes so
 \label{classif4}
 \end{figure}
 
-La figure \ref{classif4} montre que des échantillons de durée 0.64 secondes sont trop longs. En effet, on se rapproche alors de la période de variation du signal liée au sens de la parole (visible sur l'échantillon pris entre 2 et 2.8 secondes par exemple). Finalement,  on choisit une durée d'échantillon de 0.16 secondes (figure \ref{classif3}), car bien que celle de 0.06 convienne également pour différencier le signal voisé du non voisé, l'autocorrélation sur une plus grande période fait apparaître plus de maximums locaux, ce qui permet d'estimmer plus précisément la fréquence fondamentale du signal voisé. On trouve ainsi une fréquence du fondamental de 100 Hz environ.
+La figure \ref{classif4} montre que des échantillons de durée 0.64 secondes sont trop longs. En effet, on se rapproche alors de la période de variation du signal liée au sens de la parole (visible sur l'échantillon pris entre 2 et 2.8 secondes par exemple).
+
+
+Finalement,  on choisit une durée d'échantillon de 0.16 secondes (figure \ref{classif3}), car bien que celle de 0.06 convienne également pour différencier le signal voisé du non voisé, l'autocorrélation sur une plus grande période fait apparaître plus de maximums locaux, ce qui permet d'estimmer plus précisément la fréquence fondamentale du signal voisé. On trouve ainsi une fréquence du fondamental de 100 Hz environ.
 
 \begin{figure}[h!]
-\centering
-\includegraphics[width=\textwidth]{images/classificationVoix3.eps}
-\caption{Autocorrélation de divers échantillons du signal vocal.}
-\label{classif3}
+	\centering
+	\includegraphics[width=\textwidth]{images/classificationVoix3.eps}
+	\caption{Autocorrélation de divers échantillons du signal vocal.}
+	\label{classif3}
 \end{figure}
+
+\end{document}

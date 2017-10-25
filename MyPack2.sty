@@ -1,45 +1,9 @@
-%The MIT License (MIT)
-%
-%Copyright (c) 2016 Hugo LEVY-FALK
-%
-%Permission is hereby granted, free of charge, to any person obtaining a copy
-%of this software and associated documentation files (the "Software"), to deal
-%in the Software without restriction, including without limitation the rights
-%to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-%copies of the Software, and to permit persons to whom the Software is
-%furnished to do so, subject to the following conditions:
-%
-%The above copyright notice and this permission notice shall be included in all
-%copies or substantial portions of the Software.
-%
-%THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-%IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-%FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-%AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-%LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-%OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-%SOFTWARE.
-
-
-
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{MyPack2}
 
-
-
-%%%%%%%% OPTIONS %%%%%%%%%
-\newif\if@french \@frenchtrue
-\DeclareOption{french}{\@frenchtrue}
-\DeclareOption*{}%% Ne rien faire quand une option est inconnue
-\ProcessOptions
-
 %%%%%%%% INCLUSIONS GÉNÉRALES %%%%%%%%%
-
-\RequirePackage{amsfonts}
-\RequirePackage{titlesec}
-\RequirePackage{fontspec}
-\RequirePackage{amssymb, amsmath, mathtools}
 \RequirePackage{babel}
+%\RequirePackage{titlesec}
 \RequirePackage{color}
 \RequirePackage[a4paper]{geometry}
 \RequirePackage[font=small,format=plain,labelfont=bf,up,
@@ -50,8 +14,12 @@
 \RequirePackage{xcolor} % Required for specifying custom colours
 \definecolor{grey}{rgb}{0.9,0.9,0.9} % Colour of the box surrounding the title
 \RequirePackage[utf8]{inputenc} % Required for inputting international characters
-\RequirePackage[sfdefault]{ClearSans} % Use the Clear Sans font (sans serif)
+
+\RequirePackage[T1]{fontenc}
+% \RequirePackage[sfdefault]{ClearSans} % Use the Clear Sans font (sans serif)
 \RequirePackage{placeins}
+\RequirePackage{listings}
+\RequirePackage{graphicx}
 
 
 
@@ -102,28 +70,6 @@
 \newtheorem{prop}{Proposition}[section]
 \newtheorem{ex}{Exemple}[section]
 
-%%%%%%%% ALGORITHME %%%%%%%%%
-
-\if@french
-	\RequirePackage[frenchkw]{algorithm2e}
-
-	\SetKwInput{Donnees}{Données}
-	\SetKwInput{Res}{Résultat}
-	\SetKwInput{Entree}{Entrées}
-	\SetKwInput{Sortie}{Sorties}
-	\SetKw{KwA}{à}
-	\SetKw{Retour}{retourner}
-	\SetKwBlock{Deb}{début}{fin}
-	\SetKwIF{Si}{SinonSi}{Sinon}{si}{alors}{sinon si}{alors}{finsi}
-	\SetKwSwitch{Suivant}{Cas}{Autre}{suivant}{faire}{cas où}{autres cas}{fin cas}{fin d'alternative}
-	\SetKwFor{Pour}{pour}{faire}{finpour}
-	\SetKwFor{Tq}{tant que}{faire}{fintq}
-	\SetKwFor{PourCh}{pour chaque}{faire}{finprch}
-	\SetKwFor{PourTous}{pour tous}{faire}{finprts}
-	\SetKwRepeat{Repeter}{répéter}{jusqu'à}
-\else
-	\RequirePackage{algorithm2e}
-\fi
 
 %%%%%%%% SECTIONNEMENT %%%%%%%%%
 
@@ -141,12 +87,12 @@
         \rfoot{}
         \lfoot{}
 
-        \titleformat*{\section}{\Large\bfseries\color{bleu}}
-        \titleformat*{\subsection}{\large\bfseries\color{grisBleu}}
-        \titleformat*{\subsubsection}{\bfseries\color{gris}}
-        \titlespacing*{\section}{-3em}{*1}{*1}
-        \titlespacing*{\subsection}{-2em}{*1}{*1}
-        \titlespacing*{\subsubsection}{-1em}{*1}{*1}
+        %\titleformat*{\section}{\Large\bfseries\color{bleu}\Roman{section}}
+        %\titleformat*{\subsection}{\large\bfseries\color{grisBleu}}
+        %\titleformat*{\subsubsection}{\bfseries\color{gris}}
+        %\titlespacing*{\section}{-3em}{*1}{*1}
+        %\titlespacing*{\subsection}{-2em}{*1}{*1}
+        %\titlespacing*{\subsubsection}{-1em}{*1}{*1}
 
 }
 
@@ -162,12 +108,12 @@
 		\parbox[t]{0.93\textwidth}{ % Outer full width box
 			\parbox[t]{0.91\textwidth}{ % Inner box for inner right text margin
 				\raggedleft % Right align the text
-				\fontsize{50pt}{80pt}\selectfont % Title font size, the first argument is the font size and the second is the line spacing, adjust depending on title length
-				\vspace{0.7cm} % Space between the start of the title and the top of the grey box
+				\fontsize{72pt}{80pt}\selectfont % Title font size, the first argument is the font size and the second is the line spacing, adjust depending on title length
+				\vspace{1cm} % Space between the start of the title and the top of the grey box
 
-				\@title \\
+				\@title
 
-				\vspace{0.7cm} % Space between the end of the title and the bottom of the grey box
+				\vspace{1cm} % Space between the end of the title and the bottom of the grey box
 			}
 		}
 	}

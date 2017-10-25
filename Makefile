@@ -14,9 +14,6 @@ all:
 	lualatex --shell-escape $(OUT).tex
 
 clean:
-	rm $(OUT).aux $(OUT).log $(OUT).out $(OUT).toc
-	rm $(OUT).tex
+	rm $(OUT).aux $(OUT).log $(OUT).toc
 	rm images/*-eps-converted-to.pdf
 
-mrproper: clean
-	rm $(OUT).pdf
