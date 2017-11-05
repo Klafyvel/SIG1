@@ -1,7 +1,7 @@
 \documentclass[french]{article}
 
 \usepackage{MyPack2}
-\geometry{top=2cm, bottom=2cm, left=3cm, right=3cm}
+\geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
 \title{\bsc{SIG} 1}
 \author{Binôme A11 \\ \bsc{Simon} Léo, \bsc{Levy--Falk} Hugo}
 \date{\today}
@@ -113,7 +113,7 @@ Pour déterminer le bruit de quantification, on calcule la différence entre le 
 	\item pour 8 bits, $4.6464 \times 10^{-6}$, pour une valeur théorique de $1.272 \times 10^{-6}$;
 	\item pour 3 bits, $0.0063$, pour une valeur théorique de $0.0013$.
 \end{itemize}
-
+% TODO: SIGNAL SUR BRUIT
 On remarque que l'échantillonnage à 8 bits est bien plus efficace, bien que la valeur théorique soit plus faible que celle calculée.
 
 \section{ Signal audio}
@@ -128,21 +128,21 @@ A l'aide de la fonction \verb`quantifie` réalisée dans la partie précédente,
 
 Les figures \ref{sonQuantifie1} et \ref{sonQuantifie2} donnent une représentation graphiques de différentes quantification du signal vocal.
 
-\begin{figure}[!htbp]
+\begin{figure}[!h]
 \centering
-\includegraphics[width=\textwidth]{images/sonQuantifie2.eps}
+\includegraphics[height=0.45\textheight]{images/sonQuantifie2.eps}
 \caption{Quantification du signal vocal enregistré.}
 \label{sonQuantifie1}
 \end{figure}
 
-\begin{figure}[!htbp]
+\begin{figure}[!h]
 \centering
-\includegraphics[width=\textwidth]{images/sonQuantifie.eps}
+\includegraphics[height=0.45\textheight]{images/sonQuantifie.eps}
 \caption{Quantification du signal vocal enregistré - comparaison en zoom.}
 \label{sonQuantifie2}
 \end{figure}
 
-%\FloatBarrier
+\FloatBarrier
 \newpage
 \part{ Classification des signaux}
 
@@ -152,7 +152,7 @@ Pour le signal $y(t) = A \sin(2 \pi f t)$ on a :
 
 \[
 \gamma_y(\tau) = \int_0^{\frac{1}{f}} A^2 \sin(2\pi f t) \sin(2 \pi f (t+\tau)) dt \
-= \frac{A^2}{2f} \cos 2\pi f \tau - \frac{A^2}{2}\int_0^{\frac{1}{f}} \cos (2 \pi f (2t + \tau)) dt
+= \frac{A^2}{2f} \cos 2\pi f \tau - \frac{A^2}{2f}\underbrace{\int_0^{\frac{1}{f}} \cos (2 \pi f (2t + \tau)) dt}_{=0}
 \]
 
 On obtient la fonction d'autocorrélation suivante :
@@ -210,7 +210,7 @@ D'après les résultats de la section précédente, on peut différencier un sig
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth]{images/classificationVoix1.eps}
+\includegraphics[height=0.45\textheight]{images/classificationVoix1.eps}
 \caption{Autocorrélation de divers échantillons du signal vocal.}
 \label{classif1}
 \end{figure}
@@ -219,7 +219,7 @@ La figure \ref{classif1} montre que des échantillons de durée 0.01 secondes so
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth]{images/classificationVoix4.eps}
+\includegraphics[height=0.45\textheight]{images/classificationVoix4.eps}
 \caption{Autocorrélation de divers échantillons du signal vocal.}
 \label{classif4}
 \end{figure}
@@ -236,4 +236,122 @@ Finalement,  on choisit une durée d'échantillon de 0.16 secondes (figure \ref{
 	\label{classif3}
 \end{figure}
 
+\FloatBarrier
+\newpage
+
+\part{Aspects fréquentiels}
+
+\section{Échantillonnage}
+On réalise l'échantillonage d'un même signal de fréquence $f=500 \; Hz$ échantillonné à plusieurs fréquences différentes, le résultat obtenu est représenté dans les figures \ref{fig:echantillon1}, \ref{fig:echantillon2} et \ref{fig:echantillon3}.
+
+\begin{figure}[h!]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{images/echantillone_1.eps}
+	\caption{Signal échantilloné à $2f+1$.}
+	\label{fig:echantillon1}
+
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{images/echantillone_2.eps}
+	\caption{Signal échantilloné à $40f$.}
+	\label{fig:echantillon2}
+	\end{minipage}
+	\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{images/echantillone_3.eps}
+	\caption{Signal échantilloné à $\frac{1}{2}f$.}
+	\label{fig:echantillon3}
+	\end{minipage}
+\end{figure}
+
+\FloatBarrier
+\section{La Transformée de Fourier discrète (TFD)}
+
+\subsection{Densité spectrale d'énergie}
+On trace la densité spectrale d'énergie d'un signal voisé (figure \ref{fig:dse_vois}) et d'un signal non-voisé (figure \ref{fig:dse_nonvois}). On remarque que le signal non voisé ("ch") comporte de l'énergie dans toutes les fréquences de manière identique, tandis que le signal voisé ("a") présente de l'énergie uniquement sur certaines fréquences, ce qui est cohérent avec les résultats obtenus précédemment avec la méthode temporelle.
+
+
+\begin{figure}[h!]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{images/tfd_voise.eps}
+	\caption{Signal voisé et \bsc{dse}}
+	\label{fig:dse_vois}
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{images/tfd_nonvoise.eps}
+	\caption{Signal non-voisé et \bsc{dse}}
+	\label{fig:dse_nonvois}
+	\end{minipage}
+\end{figure}
+
+
+
+\FloatBarrier
+\subsection{Zéro-padding}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{images/comp_0_padding.eps}
+	\caption{Comparaison de la \bsc{dse} avec ou sans 0-padding}
+	\label{fig:dse_0_padding}
+\end{figure}
+On réalise ensuite une fonction de 0-padding. On compare la DSE pour un signal voisé, on se rend compte d'une amélioration de la précision spectrale sans modifier la résolution (l'ajout de zéro n'ajoute pas d'informations dans le spectre, le nombre de point utile reste le même).
+
+
+\FloatBarrier
+\subsection{Réduction/élévation de cadence}
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{images/cadence_signal.eps}
+	\caption{Signal échantillonné à 16kHz}
+	\label{fig:cadence_signal}
+\end{figure}
+
+On reprend notre signal ("a") (figure \ref{fig:cadence_signal}) pour évaluer l'influence de l'élévation et de la réduction de cadence.
+L'élévation de cadence (figure \ref{fig:élévation}) amène à une fréquence d'échantillonage plus élevée en insérant des zéros entre les intervalles temporels ce qui ajoute des composantes plus aigües à notre signal. La réduction de cadence (figure \ref{fig:réduction}) quant à elle supprime des échantillons et il est possible de ne plus respecter le critère de Shanon, impliquant du repliement spectrale perceptible au travers d'un son en général plus grave.
+
+La fonction 'resample' applqiue un filtre passe bas de manière à supprimer les composantes parasites, le bruit qu'on a en augmentant, diminiuant la cadence ce qui explique pourquoi on a un résultat moins bruité.
+
+\begin{figure}[h!]
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{images/cadence_augmente.eps}
+	\caption{Elevation de cadence}
+	\label{fig:élévation}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=\textwidth]{images/cadence_diminue.eps}
+	\caption{Réduction de cadence}
+	\label{fig:réduction}
+\end{minipage}
+\end{figure}
+
+\FloatBarrier
+\section{Analyse Spectrale}
+\subsection{Analyse d'une tranche de signal par TFD}
+
+La figure \ref{fig:hanning} montre qu'en réalisant la transformée de Fourier de la fenêtre de Hanning, on obtient un triangle de largeur $4/N$
+  
+\begin{figure}[h!]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/hanning_tfd.eps}
+		\caption{TFD d'une fenêtre de Hanning}
+		\label{fig:hanning}
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/hanning_sans_0p.eps}
+		\caption{Analyse d'une somme de cosinus}
+		\label{fig:hanning_sans_0p}
+	\end{minipage}
+\end{figure}
 \end{document}
