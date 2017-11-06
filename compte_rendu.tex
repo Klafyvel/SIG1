@@ -146,9 +146,11 @@ Les figures \ref{sonQuantifie1} et \ref{sonQuantifie2} donnent une représentati
 \newpage
 \part{ Classification des signaux}
 
+Le but de cette partie est de classifier les signaux, notamment en utilisant l'autocorrélation.
+
 \section{ Exemple de calcul théorique}
 
-Pour le signal $y(t) = A \sin(2 \pi f t)$ on a :
+Pour le signal $y(t) = A \sin(2 \pi f t)$, calculons l'autocorrélation :
 
 \[
 \gamma_y(\tau) = \int_0^{\frac{1}{f}} A^2 \sin(2\pi f t) \sin(2 \pi f (t+\tau)) dt \
@@ -162,7 +164,7 @@ On obtient la fonction d'autocorrélation suivante :
 
 \section{ Programmation}
 
-On calcule l'autocorrélation avec la formule suivante :
+On implémente l'autocorrélation avec la formule suivante :
 
 \[
 \gamma_x [n] = \sum_{k = 0} ^{length (x)} x[k]x[k+n]
@@ -177,8 +179,9 @@ On calcule l'autocorrélation avec la formule suivante :
 
 La figure \ref{autocorr} montre que le résultat de \verb`xcorr` et de notre implémentation de l'autocorrélation sont identiques.
 
+\paragraph{Remarque}
 Nous n'avions d'abord tracé que la partie positive, avant de nous rendre compte de la nécessité de tracer également la partie négative.
-On obtient un résultat du résultat théorique car le support de notre signal est fini, ce qui donne un cosinus amorti de manière symétrique et non un simple cosinus.
+On obtient un résultat différent du résultat théorique car le support de notre signal est fini, ce qui donne un cosinus amorti de manière symétrique et non un simple cosinus.
 
 \section{ Application à la classification de quelques signaux simples}
 
@@ -354,4 +357,42 @@ La figure \ref{fig:hanning} montre qu'en réalisant la transformée de Fourier d
 		\label{fig:hanning_sans_0p}
 	\end{minipage}
 \end{figure}
+
+On remarque grâce à la figure \ref{fig:hanning_sans_0p} que du fait de l'échantillonage de la transformée de Fourier, le second pic du graphe est tronqué. On retrouve ainsi le résultat du TD 4.
+
+\subsection{Effets de quelques fenêtres}
+
+Après modification de la fonction d'analyse (voir le fichier \verb`tfd.m`) pour permettre à l'utilisateur de choisir la fenêtre de pondération. On remarque tout d'abord que le 0-padding permet d'augmenter la résolution de la transformée de Fourier discrète. C'est pourquoi on comparera les effets des différentes fenêtres avec un 0-padding de 2048 points.
+
+  
+\begin{figure}[h!]
+	\centering
+  	\begin{minipage}{0.45\textwidth}
+  		\centering
+  		\includegraphics[width=\textwidth]{images/rectangle.eps}
+  		\caption{Effet du fenêtrage rectangulaire.}
+  		\label{fig:fen_rectangle}
+  	\end{minipage}
+  	\begin{minipage}{0.45\textwidth}
+  		\centering
+  		\includegraphics[width=\textwidth]{images/hanning.eps}
+  		\caption{Effet du fenêtrage de Hanning}
+  		\label{fig:fen_hanning}
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/hamming.eps}
+		\caption{Effet du fenêtrage de Hamming}
+		\label{fig:fen_hamming}
+	\end{minipage}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{images/blackman.eps}
+		\caption{Effet du fenêtrage de Blackman}
+		\label{fig:fen_blackman}
+	\end{minipage}
+\end{figure}
+
+On remarque que le fenêtrage rectanglaire (figure \ref{fig:fen_rectangle}), s'il produit des pics de faible largeure devant ceux des autres fenêtres produit des lobes secondaires de hauteur importante. Les fenêtres de Hanning (figure \ref{fig:fen_hanning}), puis de Hamming (figure \ref{fig:fen_hamming}) et de Blackman (figure \ref{fig:fen_blackman}) produisent des lobes secondaires de hauteur de plus en plus faibles, mais au détriment de la largeure du lobe principal.
+
 \end{document}
