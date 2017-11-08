@@ -1,5 +1,6 @@
 \documentclass[french]{article}
 
+\usepackage{tikz}
 \usepackage{MyPack2}
 \geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
 \title{\bsc{SIG} 1}
@@ -154,12 +155,12 @@ Pour le signal $y(t) = A \sin(2 \pi f t)$, calculons l'autocorrélation :
 
 \[
 \gamma_y(\tau) = \int_0^{\frac{1}{f}} A^2 \sin(2\pi f t) \sin(2 \pi f (t+\tau)) dt \
-= \frac{A^2}{2f} \cos 2\pi f \tau - \frac{A^2}{2f}\underbrace{\int_0^{\frac{1}{f}} \cos (2 \pi f (2t + \tau)) dt}_{=0}
+= \frac{A^2}{2} \cos 2\pi f \tau - \frac{A^2}{2}\underbrace{\int_0^{\frac{1}{f}} \cos (2 \pi f (2t + \tau)) dt}_{=0}
 \]
 
 On obtient la fonction d'autocorrélation suivante :
 \[
-\gamma_y (t) = \frac{A^2} {2f} cos(2 \pi f t)
+\gamma_y (t) = \frac{A^2} {2} cos(2 \pi f t)
 \]
 
 \section{ Programmation}
@@ -198,7 +199,8 @@ La figure \ref{classifSig} montre que les signaux sinusoïdaux et triangulaires 
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\textwidth]{images/classificationAh.eps}
+%\includegraphics[width=\textwidth]{images/classificationAh.eps}
+\input{images/classificationAh.tex}
 \caption{Autocorrélation de divers échantillons du signal vocal.}
 \label{classifAh}
 \end{figure}
@@ -274,7 +276,7 @@ On réalise l'échantillonage d'un même signal de fréquence $f=500 \; Hz$ éch
 \section{La Transformée de Fourier discrète (TFD)}
 
 \subsection{Densité spectrale d'énergie}
-On trace la densité spectrale d'énergie d'un signal voisé (figure \ref{fig:dse_vois}) et d'un signal non-voisé (figure \ref{fig:dse_nonvois}). On remarque que le signal non voisé ("ch") comporte de l'énergie dans toutes les fréquences de manière identique, tandis que le signal voisé ("a") présente de l'énergie uniquement sur certaines fréquences, ce qui est cohérent avec les résultats obtenus précédemment avec la méthode temporelle.
+On trace la densité spectrale d'énergie d'un signal voisé (figure \ref{fig:dse_vois}) et d'un signal non-voisé (figure \ref{fig:dse_nonvois}). On remarque que le signal non voisé ("ch") comporte de l'énergie dans toutes les fréquences de manière identique, tandis que le signal voisé ("a") présente de l'énergie uniquement sur certaines fréquences, ce qui est cohérent avec les résultats obtenus précédemment avec la méthode temporelle. %TODO : Pourquoi c'est cohérent ?
 
 
 \begin{figure}[h!]
@@ -367,27 +369,38 @@ Après modification de la fonction d'analyse (voir le fichier \verb`tfd.m`) pour
   
 \begin{figure}[h!]
 	\centering
-  	\begin{minipage}{0.45\textwidth}
+	\begin{minipage}{\textwidth}
+		\centering
+		%\includegraphics[width=\textwidth]{images/signal_fenetre.eps}
+		\input{images/signal_fenetre.tex}
+		\caption{Signal analysé.}
+		\label{fig:fen_signal}
+	\end{minipage}
+  	\begin{minipage}{\textwidth}
   		\centering
-  		\includegraphics[width=\textwidth]{images/rectangle.eps}
+  		%\includegraphics[width=\textwidth]{images/rectangle.eps}
+  		\input{images/rectangle.tex}
   		\caption{Effet du fenêtrage rectangulaire.}
   		\label{fig:fen_rectangle}
   	\end{minipage}
-  	\begin{minipage}{0.45\textwidth}
+  	\begin{minipage}{\textwidth}
   		\centering
-  		\includegraphics[width=\textwidth]{images/hanning.eps}
+  		%\includegraphics[width=\textwidth]{images/hanning.eps}
+  		\input{images/hanning.tex}
   		\caption{Effet du fenêtrage de Hanning}
   		\label{fig:fen_hanning}
 	\end{minipage}
-	\begin{minipage}{0.45\textwidth}
+	\begin{minipage}{\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{images/hamming.eps}
+		%\includegraphics[width=\textwidth]{images/hamming.eps}
+		\input{images/hamming.tex}
 		\caption{Effet du fenêtrage de Hamming}
 		\label{fig:fen_hamming}
 	\end{minipage}
-	\begin{minipage}{0.45\textwidth}
+	\begin{minipage}{\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{images/blackman.eps}
+		% \incudegraphics[width=\textwidth]{images/blackman.eps}
+		\input{images/blackman.tex}
 		\caption{Effet du fenêtrage de Blackman}
 		\label{fig:fen_blackman}
 	\end{minipage}
