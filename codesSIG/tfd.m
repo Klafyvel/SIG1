@@ -26,17 +26,15 @@ function tfd(s, t_tranche, i,taille_fft, fenetre, affiche=true)
 		figure;
 		clf;
 		subplot(211);
+    grid on;
 		plot(sig);
 		title('Signal analysé.');
 		xlabel('Temps (s)');
-		hold off;
 
 		subplot(212);
+    grid on;
 	end
     plot(f,y);
     title(['TFD de la tranche, fenêtre ' fenetre ' zero-padding : ' num2str(taille_fft)]);
     xlabel('Fréquence (Hz)');
-	if affiche
-		hold off;
-	end
 end

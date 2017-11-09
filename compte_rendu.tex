@@ -350,21 +350,21 @@ La figure \ref{fig:hanning} montre qu'en réalisant la transformée de Fourier d
   
 \begin{figure}[h!]
 	\centering
-	\begin{minipage}{0.45\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{images/hanning_tfd.eps}
-		\caption{TFD d'une fenêtre de Hanning}
-		\label{fig:hanning}
-	\end{minipage}
-	\begin{minipage}{0.45\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{images/hanning_sans_0p.eps}
-		\caption{Analyse d'une somme de cosinus}
-		\label{fig:hanning_sans_0p}
-	\end{minipage}
+	%\includegraphics[width=\textwidth]{images/hanning_tfd.eps}
+	\input{images/hanning_tfd.tex}
+	\caption{TFD d'une fenêtre de Hanning}
+	\label{fig:hanning}
 \end{figure}
 
 On remarque grâce à la figure \ref{fig:hanning_sans_0p} que du fait de l'échantillonage de la transformée de Fourier, le second pic du graphe est tronqué. On retrouve ainsi le résultat du TD 4.
+
+\begin{figure}[h!]
+	\centering
+	%\includegraphics[width=\textwidth]{images/hanning_sans_0p.eps}
+	\input{images/hanning_sans_0p.tex}
+	\caption{Analyse d'une somme de cosinus}
+	\label{fig:hanning_sans_0p}
+\end{figure}
 
 \subsection{Effets de quelques fenêtres}
 
@@ -380,6 +380,8 @@ Après modification de la fonction d'analyse (voir le fichier \verb`tfd.m`) pour
 		\caption{Signal analysé.}
 		\label{fig:fen_signal}
 	\end{minipage}
+\end{figure}
+\begin{figure}[h!]
   	\begin{minipage}{\textwidth}
   		\centering
   		%\includegraphics[width=\textwidth]{images/rectangle.eps}
@@ -413,7 +415,7 @@ Après modification de la fonction d'analyse (voir le fichier \verb`tfd.m`) pour
 On remarque que le fenêtrage rectanglaire (figure \ref{fig:fen_rectangle}), s'il produit des pics de faible largeure devant ceux des autres fenêtres produit des lobes secondaires de hauteur importante. Les fenêtres de Hanning (figure \ref{fig:fen_hanning}), puis de Hamming (figure \ref{fig:fen_hamming}) et de Blackman (figure \ref{fig:fen_blackman}) produisent des lobes secondaires de hauteur de plus en plus faibles, mais au détriment de la largeure du lobe principal.
 
 \FloatBarrier
-\newpage
+\clearpage
 \part{Application : détection de pitch}
 
 Le but de cette partie est de réaliser une fonction capable de détecter la note jouée lors d'un enregistrement sonore. Pour cela on va découper le signal en tranches réparties régulièrement sur toute la durée de l'enregistrement.
