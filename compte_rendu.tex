@@ -37,14 +37,14 @@ Tout d'abord, nous avons cherché à générer un signal sinusoïdal et à l'éc
 
 Dans le but de calculer l'énergie d'un signal sans utiliser \verb`for`, nous avons effectué un produit terme à terme et utilisé l'outil \verb`sum`. Une manière encore plus efficace de procéder aurait été de réaliser le produit entre le vecteur donné en entrée et sa transposée. Nous avons ensuite calculé la puissance moyenne de manière théorique, en utilisant l'identité :
 
-\[
+\begin{equation}
 \sin^2(x)=\frac {1-\cos(2x)} {2}
-\]
+\end{equation}
 
 on obtient
-\[
-\frac{1} {2 \pi} \int_{0}^{2 \pi} \sin^2(x) \mathrm{d}x = 1/2
-\]
+\begin{equation}
+\frac{1} {2 \pi} \int_{0}^{2 \pi} \sin^2(x) \mathrm{d}x = \frac{1}{2}
+\end{equation}
 
 Par ailleurs, nous avons estimé la puissance de notre signal en utilisant la fonction puissance qui effectue la somme du produit terme à terme du signal et divise par la longueur de ce signal.
 
@@ -63,19 +63,21 @@ On obtient un résultat conforme au calcul réalisé.
 \subsection{ Quantification}
 
 Pour quantifier un signal sur N bits, on commence par le centrer en 0 et le borner entre -0.5 et 0.5 à l'aide d'une première homothétie. Soit $s_1$ le signal ainsi obtenu. On réalise ensuite la quantification. Si $N > 0$ est le nombre de bit de quantification, on pose $q=\frac{1}{2^N}$. Dans un premier temps, on pose $s_2$ tel que :
-\[
+\begin{equation}
   s_2[k] = (\lfloor \frac{s_1[k]}{q} \rfloor + \frac{1}{2}) \times q
-\]
+\end{equation}
 
 Cependant cette formule est problématique pour la valeur maximale atteinte par la fonction. En effet, on a alors :
-\[
-s_2[k] = ( \lfloor \frac{1}{2q} \rfloor + \frac{1}{2}) \times q ) = (2^{N-1} + \frac{1}{2}) \times \frac{1}{2^N} > \frac{1}{2}
-\]
+\begin{eqnarray}
+s_2[k] &=& \left( \lfloor \frac{1}{2q} \rfloor + \frac{1}{2}\right) \times q \\
+&=& \left(2^{N-1} + \frac{1}{2}\right) \times \frac{1}{2^N} \\
+&>& \frac{1}{2}
+\end{eqnarray}
 
 Ce qui est incohérent avec le signal original. Une solution est de poser :
-\[
-  s_2[k] = min((\lfloor \frac{s_1[k]}{q} \rfloor + \frac{1}{2}) \times q, \frac{1}{2} - \frac{q}{2})
-\]
+\begin{equation}
+  s_2[k] = \min\left(\left[\lfloor \frac{s_1[k]}{q} \rfloor + \frac{1}{2}\right] \times q, \frac{1}{2} - \frac{q}{2}\right)
+\end{equation}
 
 Il ne reste plus qu'à remettre la fonction à l'échelle. On obtient le code suivant :
 
@@ -153,23 +155,23 @@ Le but de cette partie est de classifier les signaux, notamment en utilisant l'a
 
 Pour le signal $y(t) = A \sin(2 \pi f t)$, calculons l'autocorrélation :
 
-\[
-\gamma_y(\tau) = \int_0^{\frac{1}{f}} A^2 \sin(2\pi f t) \sin(2 \pi f (t+\tau)) dt \
-= \frac{A^2}{2} \cos 2\pi f \tau - \frac{A^2}{2}\underbrace{\int_0^{\frac{1}{f}} \cos (2 \pi f (2t + \tau)) dt}_{=0}
-\]
+\begin{eqnarray}
+\gamma_y(\tau) &=& \int_0^{\frac{1}{f}} A^2 \sin(2\pi f t) \sin(2 \pi f (t+\tau)) dt \\
+&=& \frac{A^2}{2} \cos 2\pi f \tau - \frac{A^2}{2}\underbrace{\int_0^{\frac{1}{f}} \cos (2 \pi f (2t + \tau)) dt}_{=0}
+\end{eqnarray}
 
 On obtient la fonction d'autocorrélation suivante :
-\[
+\begin{equation}
 \gamma_y (t) = \frac{A^2} {2} cos(2 \pi f t)
-\]
+\end{equation}
 
 \section{ Programmation}
 
 On implémente l'autocorrélation avec la formule suivante :
 
-\[
-\gamma_x [n] = \sum_{k = 0} ^{length (x)} x[k]x[k+n]
-\]
+\begin{equation}
+\gamma_x [n] = \sum_{k = 0} ^{\mathtt{length} (x)} x[k]x[k+n]
+\end{equation}
 
 \begin{figure}[h!]
 	\centering
@@ -210,6 +212,8 @@ La figure \ref{classifAh} montre que le signal vocal est quasi-stationnaire. En 
 \FloatBarrier
 
 \section{ Classification de signaux de parole voisés ou non voisés}
+
+\label{sect:autocorr_voise}
 
 D'après les résultats de la section précédente, on peut différencier un signal de parole voisé d'un non voisé en visualisant l'autocorrélation. En effet un signal non voisé est constitué de bruit et devrait présenter une autocorrélation faible, et non périodique. Se pose alors la question de la longueur des échantillons sur lesquels on calcule l'autocorrélation. Nous avons essayé les durées 0.01, 0.06, 0.16 et 0.64 secondes.
 
@@ -407,5 +411,58 @@ Après modification de la fonction d'analyse (voir le fichier \verb`tfd.m`) pour
 \end{figure}
 
 On remarque que le fenêtrage rectanglaire (figure \ref{fig:fen_rectangle}), s'il produit des pics de faible largeure devant ceux des autres fenêtres produit des lobes secondaires de hauteur importante. Les fenêtres de Hanning (figure \ref{fig:fen_hanning}), puis de Hamming (figure \ref{fig:fen_hamming}) et de Blackman (figure \ref{fig:fen_blackman}) produisent des lobes secondaires de hauteur de plus en plus faibles, mais au détriment de la largeure du lobe principal.
+
+\FloatBarrier
+\newpage
+\part{Application : détection de pitch}
+
+Le but de cette partie est de réaliser une fonction capable de détecter la note jouée lors d'un enregistrement sonore. Pour cela on va découper le signal en tranches réparties régulièrement sur toute la durée de l'enregistrement.
+
+\section{Détection de signal voisé}
+
+Dans un premier temps il est nécessaire de pouvoir différencier une tranche de signal voisée d'une tranche non voisée. Nous avons vu dans la section \ref{sect:autocorr_voise} que nous pouvons classifier le signal en utilisant l'autocorrélation. On remarque qu'un signal périodique que l'on pondère par une fenêtre rectangulaire de largeure $T$ possède une autocorrélation comprise dans une enveloppe triangulaire telle que décrite par la figure \ref{fig:enveloppe}.
+
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}
+	\draw[->] (-4,0) -- (0,0) node[anchor=north west]{0} -- (4,0) node[anchor=north west] {$\tau$};
+	\draw[->] (0,-0.5) -- (0,3);% node[anchor=south]{Enveloppe};
+	
+	\draw[red,thick,dashed] (-3.5,0)  -- (0,2.5) -- (3.5, 0);
+	
+	\draw (-3.5,0.1) -- (-3.5,-0.1) node[anchor=north]{$-T$};
+	\draw (3.5,0.1) -- (3.5,-0.1) node[anchor=north]{$T$};
+	\draw (-0.1,2.5) -- (0.1, 2.5) node[anchor=south west]{$E$};
+	
+	\draw (1.5,1.5) node[anchor=south west]{$\tau \mapsto \frac{E}{T}(T - \tau)$};
+	\draw (-1.5,1.5) node[anchor=south east]{$\tau \mapsto \frac{E}{T}(T + \tau )$};
+	
+	\end{tikzpicture}
+	\caption[Enveloppe de l'autocorrélation]{Enveloppe du signal de l'autocorrélation pour un signal périodique pondéré par une fenêtre rectangulaire de largeure T}
+	\label{fig:enveloppe}
+\end{figure}
+
+Afin de détecter la pseudo-périodicité dans l'autocorrélation, et donc la nature voisée du signal, on va chercher des maximums locaux dont la distance au triangle est faible. De plus ces maximums devront satisfaire un critère de périodicité, c'est à dire que si $k$ est l'indice d'un tel maximum local, l'ensemble des $\{nk, nk \leq T\}$ doivent également correspondre à des points de l'autocorrélation proches du triangle. De plus, l'autocorrélation étant paire, on ne regardera que les $k$ positifs.
+
+\section{Mesure du pitch}
+
+La mesure du pitch est nécessaire à la détermination de la note. Cela se fait également sur l'autocorrélation, en mesurant la période des maximums locaux qui déterminent si le signal est voisé. On modifie donc la fonction écrite dans la section précédente afin de prendre en argument la plage de recherche du pitch (ce qui va également accélérer l'exécution de la fonction). 
+
+On renvoie un booléen qui indique si le signal est voisé, et l'indice du maximum qui a permis de déterminer ce résultat. Si on appelle $k$ l'indice ainsi obtenu, l'utilisateur peut déterminer la fréquence du fondamental $f$ avec $f = \frac{f_e}{k}$ où $f_e$ est la fréquence d'échantillonage du signal.
+
+\section{Détection de la note}
+
+La formule donnée par le sujet du TL relie le numéro de la note à la fréquence du fondamental associé.
+
+\begin{equation}
+f = 440 \times 2 ^{\frac{n - 69}{12}}
+\label{eq:freq_note}
+\end{equation}
+
+Il suffit donc d'inverser l'équation \ref{eq:freq_note} pour obtenir le numéro de la note en fonction de la fréquence mesurée sur le signal. La note obtenue n'étant pas forcément juste, il faut adapter un peu pour obtenir un nombre entier à coup sûr.
+
+\begin{equation}
+n = \lfloor 12 \times \log_2\left(\frac{f}{440}\right) + 69 \rfloor
+\end{equation}
 
 \end{document}
