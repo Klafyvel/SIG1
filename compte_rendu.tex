@@ -486,6 +486,68 @@ n = \lfloor 12 \times \log_2\left(\frac{f}{440}\right) + 69 \rfloor
 
 En utilisant les fonctions écrites précédemment, on peut écrire une fonction qui détecte la partition jouée dans un enregistrement. Pour cela on mesure la fréquence du fondamental sur chacune des tranches comportant un signal voisé, puis on fait correspondre la note MIDI associée. Pour lisser le résultat obtenu, on impose une durée minimale aux notes jouées, c'est à dire qu'une note de longueur inférieure ne sera pas détectée. En sortie on donne une matrice à 3 colonnes avec la date de début de la note, la fréquence mesurée et le numéro de la note. On remarque que la durée de la note n'est pas spécifiée. En effet on choisit de ne stocker que des notes de durée $T_{min}$, où $T_{min}$ est la durée minimale d'une note. Ainsi si l'enregistrement comporte une note de durée $2.5\times T_{min}$ de fréquence $f$, alors on stocke 2 notes successives de fréquence $f$.
 
-\section
+\section{Test de l'algorithme}
+
+On commence à tester notre algorithme sur le signal de parole enregistré 'chat', en recherchant le pitch entre 80 et 2000 Hz, pour des tranches de durée 0.1 s et des notes de durée minimale de 0.1 s. On obtient :
+
+\begin{lstlisting}
+>> test_detection_pitch
+
+notes =
+
+1.3001  103.8961   44.0000
+1.5001  102.5641   44.0000
+1.6001  102.5641   44.0000
+1.7001  101.9108   44.0000
+1.8001  101.9108   44.0000
+1.9001  101.2658   44.0000
+2.0001  100.6289   43.0000
+\end{lstlisting}
+
+On trouve a un résultat cohérent avec ce qui a été trouvé dans les parties précedentes de l'étude de laboratoire. On peut donc tester notre fonction sur des signaux plus complexes.
+
+Pour vérifier la justesse de la reconstitution, on créer un signal audio en utilisant le logiciel MuseScore et on l'exporte en fichier WAV. La partition enregistrée est celle de la figure \ref{fig:partition}.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{images/partition.png}
+	\caption{Partition exportée.}
+	\label{fig:partition}
+\end{figure}
+
+On lance ensuite notre fonction avec une plage de recherche comprise entre 80Hz et 2500Hz, une durée minimale de la note de 0.0625s et une taille de fenêtre de 0.05s. On obtient un résultat de la forme:
+
+\begin{lstlisting}
+notes =
+
+0.2500  464.2105   70.0000
+0.3750  464.2105   70.0000
+0.4375  464.2105   70.0000
+0.5625  580.2632   74.0000
+0.6875  580.2632   74.0000
+1.1250  773.6842   79.0000
+1.5000  773.6842   79.0000
+1.6250  773.6842   79.0000
+1.6875  773.6842   79.0000
+1.7500  773.6842   79.0000
+1.8125  773.6842   79.0000
+1.8750  773.6842   79.0000
+1.9375  773.6842   79.0000
+2.0000  700.0000   77.0000
+2.0625  700.0000   77.0000
+...
+\end{lstlisting}
+
+On vérifie que les valeurs calculées des notes sont celles attendues (par exemple la note 70 est un Sib, ce qui correspond à la première note de la partition).
+
+Afin de mieux interpréter le résultat, on symbolise les barres de mesures par des lignes verticales. La figure \ref{fig:notes} nous permet d'apprécier la similitude entre la reconstitution et la partition originale.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=\textwidth]{images/notes.eps}
+	\caption{Partition reconstituée.}
+	\label{fig:notes}
+\end{figure}
+
 
 \end{document}
