@@ -1,6 +1,6 @@
 % function note = detection_note(f)
-% Renvoie la note MIDI correspondant à la fréquence passée en paramètre.
+% Renvoie la note MIDI correspondant ï¿½ la frï¿½quence passï¿½e en paramï¿½tre.
 
 function note = detection_note(f)
-    note = floor(log2(f / 440) * 12 + 69);
+    note = round(log2(f / 440) * 12 + 69);
 end

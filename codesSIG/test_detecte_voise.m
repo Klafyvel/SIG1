@@ -1,10 +1,10 @@
 figure;
-[s,fe] = wavread('chat.wav');
+[s,fe] = audioread('chat.wav');
 s = s(:,1);
 
 long = length(s);
 voise = zeros(long,2);
-taille_fen = 0.1*fe; % fenêtre de 100ms
+taille_fen = 0.1*fe; % fenï¿½tre de 100ms
 fmin = 80;
 fmax = 1000;
 epsilon = 1/10;

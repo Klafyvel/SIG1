@@ -8,7 +8,7 @@
 %    subplot(420 + 2*i);
 %    [t,a] = autocorrelation2(ah(l/5*i:e*fe), fe);
 %    plot(t,a)
-%    title('Autocorrélation');
+%    title('Autocorrï¿½lation');
 %    xlabel('$\tau$ (s)');
 %    subplot(420 + 2*i-1);
 %    plot(t(length(t)/2+1:length(t))+b, ah(l/5*i:e*fe));
@@ -30,7 +30,7 @@ subplot(322);
 disp('autocorr');
 [t,a] = autocorrelation2(s, fe);
 plot(t,a);
-title('Autocorrélation');
+title('AutocorrÃ©lation');
 xlabel('$\tau$ (s)');
 
 subplot(323);
@@ -39,12 +39,12 @@ t = mesure(:,1);
 s = mesure(:,2);
 fe = length(s)/(t(length(t))-t(1));
 plot(t,s)
-title(['Signal sinusoïdal fe=' num2str(fe) 'Hz']);
+title(['Signal sinusoÃ¯dal fe=' num2str(fe) 'Hz']);
 xlabel('t (s)');
 subplot(324);
 [t,a] = autocorrelation2(s, fe);
 plot(t,a);
-title('Autocorrélation');
+title('AutocorrÃ©lation');
 xlabel('$\tau$ (s)');
 
 subplot(325);
@@ -58,6 +58,6 @@ xlabel('t (s)');
 subplot(326);
 [t,a] = autocorrelation2(s, fe);
 plot(t,a);
-title('Autocorrélation');
+title('AutocorrÃ©lation');
 xlabel('$\tau$ (s)');
 print '../images/classificationSig.tex' -dtikz -color;
