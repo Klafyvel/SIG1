@@ -15,7 +15,7 @@ y = 2*abs(y(1:NFFT/2+1));
 f = [0:NFFT/2]/NFFT;
 plot(f,y);
 grid on;
-title('Transformée de Fourier');
+title(["Transformée de Fourier d'une fenêtre de Hanning, N=" num2str(N)]);
 xlabel('$f$ (Hz)');
 
 print fig '../images/hanning_tfd.tex' -dtikz -color '-S500,200';

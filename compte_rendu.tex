@@ -19,13 +19,13 @@
 
 \part{Opérations de base sur les signaux}
 
-\section{Signal numérique de synthèse}
+Dans cette première partie, notre objectif est de définir quelques fonctions de calcul de base sur les signaux, afin de découvrir les outils que propose Matlab.
 
-Notre objectif  est de définir quelques fonctions de calcul de base sur les signaux afin de découvrir les outils de Matlab.
+\section{Signal numérique de synthèse}
 
 \subsection{Génération du signal}
 
-Tout d'abord, nous avons cherché à générer un signal sinusoïdal et à l'échantillonner avant de tracer son graphe. Après avoir effectué quelques tracés, nous avons également pu mettre en évidence le théorème de Niquist-Shannon. La figure \ref{signalSin} montre le résultat obtenu pour une fréquence d'échantillonage de 50 Hz, une fréquence de 4 Hz et N=25.
+Tout d'abord, nous avons cherché à générer un signal sinusoïdal et à l'échantillonner avant de tracer son graphe. La figure \ref{signalSin} montre le résultat obtenu pour une fréquence d'échantillonage de 50 Hz, une fréquence de 4 Hz et 25 points de traçé.
 
 \begin{figure}[h!]
 \centering
@@ -42,7 +42,7 @@ Dans le but de calculer l'énergie d'un signal sans utiliser \verb`for`, nous av
 \sin^2(x)=\frac {1-\cos(2x)} {2}
 \end{equation}
 
-on obtient
+On obtient
 \begin{equation}
 \frac{1} {2 \pi} \int_{0}^{2 \pi} \sin^2(x) \mathrm{d}x = \frac{1}{2}
 \end{equation}
@@ -94,7 +94,7 @@ function sig_quant = quantifie(X, n_bit)
     sig_quant = min((floor(s1/q) + 1/2) * q, 1/2-q/2)*d + c;
 end
 \end{lstlisting}
-En appliquant la fonction \verb`quantifie` pour $N=3$ et $N=8$ à un signal généré grâce à la fonction écrite dans la partie 1, on obtient la figure \ref{signalBruit}. On peut noter qu'il est difficile de différencier le signal d'entrée du signal quantifié sur 8 bits. La figure \ref{signalBruit2} montre offre un zoom qui permet de différencier le signal de la quantification.
+En appliquant la fonction \verb`quantifie` pour $N=3$ et $N=8$ à un signal généré grâce à la fonction écrite dans la partie 1, on obtient la figure \ref{signalBruit}. On peut noter qu'il est difficile de différencier le signal d'entrée du signal quantifié sur 8 bits. La figure \ref{signalBruit2} offre un zoom qui permet de différencier le signal original de celui quantifié sur 8 bits.
 
 \begin{figure}[h!]
 \centering
@@ -111,20 +111,29 @@ En appliquant la fonction \verb`quantifie` pour $N=3$ et $N=8$ à un signal gén
 
 %\FloatBarrier
 
-Pour déterminer le bruit de quantification, on calcule la différence entre le signal d'origine et le signal quantifié, et on en détermine l'énergie. On calcule également la valeur théorique du bruit de quantification. On obtient
+Pour déterminer le bruit de quantification, on calcule la différence entre le signal d'origine et le signal quantifié, et on en détermine la puissance moyenne. On calcule également la valeur théorique du bruit de quantification. On obtient
 
-\begin{itemize}
-	\item pour 8 bits, $4.6464 \times 10^{-6}$, pour une valeur théorique de $1.272 \times 10^{-6}$;
-	\item pour 3 bits, $0.0063$, pour une valeur théorique de $0.0013$.
-\end{itemize}
+\begin{tabular}{l|c|c|l}
+	Nombre de bits & Puissance moyenne théorique du bruit & Puissance moyenne mesurée du bruit & RSB en dB\\ 
+	\hline
+	3 & $0.0013$ & $0.0063004$ & plop \\ 
+	\hline
+	8 & $1.272 \times 10^{-6}$ & $4.6464\times 10^{-6}$ & plop
+\end{tabular} 
 % TODO: SIGNAL SUR BRUIT
-On remarque que l'échantillonnage à 8 bits est bien plus efficace, bien que la valeur théorique soit plus faible que celle calculée.
 
+On remarque tout d'abord que les valeurs mesurées de la puissance moyenne du bruit de quantification sont proches de celles prédites par la théorie. On remarque que l'échantillonnage à 8 bits est bien plus efficace, bien que la valeur théorique soit plus faible que celle calculée.
+
+\FloatBarrier
 \section{ Signal audio}
+
+\subsection{Enregistrement}
+
+On enregistre un signal audio en utilisant le logiciel Audacity. Il est important de veiller à ne pas saturer le micro lors de l'enregistrement. La fréquence d'échantillonage utilisée est de 11 kHz. On le retrouvera dans la figure \ref{sonQuantifie1}. Les deux mots prononcés sont "Hervé, Biausser".
 
 \subsection{ Restitution}
 
-En écoutant le signal enregistré à différentes fréquences de restitutions, on remarque que augmenter cette fréquence diminue la durée de la restitution et décale les fréquences de l'enregistrement vers des fréquences plus hautes. Inversement, diminuer la fréquence de restitution augmente la durée de l'enregistrement tout en déplaçant les fréquences des sons de l'enregistrement vers les graves.
+En écoutant le signal enregistré à différentes fréquences de restitutions, on remarque qu'augmenter cette fréquence diminue la durée de la restitution et décale les fréquences de l'enregistrement vers des fréquences plus hautes. Inversement, diminuer la fréquence de restitution augmente la durée de l'enregistrement tout en déplaçant les fréquences des sons de l'enregistrement vers les graves.
 
 \subsection{ Quantification}
 
@@ -146,8 +155,13 @@ Les figures \ref{sonQuantifie1} et \ref{sonQuantifie2} donnent une représentati
 \label{sonQuantifie2}
 \end{figure}
 
+\subsection{Extraction de mots}
+
+En observant le chronogramme du signal, on distingue les deux mots, ce qui permet de repérer l'instant $t$ où couper le signal pour séparer ces deux mots. L'indice correspondant du vecteur dans lequel est stocké le signal est $k=t*f_e$ où $f_e$ est la fréquence d'échantillonage.
+
 \FloatBarrier
 \newpage
+\clearpage
 \part{ Classification des signaux}
 
 Le but de cette partie est de classifier les signaux, notamment en utilisant l'autocorrélation.
@@ -158,6 +172,7 @@ Pour le signal $y(t) = A \sin(2 \pi f t)$, calculons l'autocorrélation :
 
 \begin{eqnarray}
 \gamma_y(\tau) &=& \int_0^{\frac{1}{f}} A^2 \sin(2\pi f t) \sin(2 \pi f (t+\tau)) dt \\
+&=& A^2 \int^{\frac{1}{f}}_0 \frac{1}{2} \times (\cos(2\pi f t - 2 \pi f (t+\tau)) + \cos(2\pi f t + 2 \pi f (t + \tau))) dt \\
 &=& \frac{A^2}{2} \cos 2\pi f \tau - \frac{A^2}{2}\underbrace{\int_0^{\frac{1}{f}} \cos (2 \pi f (2t + \tau)) dt}_{=0}
 \end{eqnarray}
 
@@ -168,15 +183,22 @@ On obtient la fonction d'autocorrélation suivante :
 
 \section{ Programmation}
 
-On implémente l'autocorrélation avec la formule suivante :
+La formule de l'autocorrélation pour un signal discret $x$ est :
+\begin{equation}
+\forall n \in \mathbb{N}, \gamma_x [n] = \sum_{k\in \mathbb{Z}} x[k] \times x[k+n]
+\end{equation}
+
+Puisqu'on travaille sur des signaux à support fini, stockés sur des indices compris entre 1 et $N$ (avec $N = \mathtt{length}(x)$), on implémente l'autocorrélation avec la formule suivante :
 
 \begin{equation}
-\gamma_x [n] = \sum_{k = 0} ^{\mathtt{length} (x)} x[k]x[k+n]
+\forall n \in [-N,N], \gamma_x [n+N] = \sum_{k, (k+n>0) \bigwedge (k+n \leq N) } x[k]x[k+n]
 \end{equation}
+
+Matlab propose une fonction \verb`xcorr` qui permet de calculer l'autocorrélation. Afin de comparer notre implémentation et cette fonction, on trace les résultats de l'appele aux deux fonctions sur un même signal. On prend soin d'afficher le résultat sur une échelle cohérente pour $\tau$.
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics{images/autocorr.eps}
+	\includegraphics[height=0.33\textheight]{images/autocorr.eps}
 	\caption{Comparatif de de la fonction xcorr et de notre implémentation de l'autocorrélation.}
 	\label{autocorr}
 \end{figure}
@@ -193,13 +215,13 @@ Lorsque le signal se "répète" au cours du temps son autocorrélation est sembl
 
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=1\textwidth]{images/classificationSig.eps}
+	\includegraphics[height=0.45\textheight]{images/classificationSig.eps}
 	\caption{Autocorrélation de plusieurs signaux.}
 	\label{classifSig}
 \end{figure}
 
 La figure \ref{classifSig} montre que les signaux sinusoïdaux et triangulaires sont stationnaires, contrairement au signal du bruit.
-
+\FloatBarrier
 \begin{figure}[h!]
 \centering
 %\includegraphics[width=\textwidth]{images/classificationAh.eps}
@@ -227,7 +249,7 @@ D'après les résultats de la section précédente, on peut différencier un sig
 \end{figure}
 
 La figure \ref{classif1} montre que des échantillons de durée 0.01 secondes sont trop courts pour différencier aisément le signal voisé du non voisé.
-
+\FloatBarrier
 \begin{figure}[h!]
 \centering
 %\includegraphics[height=0.45\textheight]{images/classificationVoix4.eps}
@@ -238,8 +260,9 @@ La figure \ref{classif1} montre que des échantillons de durée 0.01 secondes so
 
 La figure \ref{classif4} montre que des échantillons de durée 0.64 secondes sont trop longs. En effet, on se rapproche alors de la période de variation du signal liée au sens de la parole (visible sur l'échantillon pris entre 2 et 2.8 secondes par exemple).
 
+\FloatBarrier
 
-Finalement,  on choisit une durée d'échantillon de 0.16 secondes (figure \ref{classif3}), car bien que celle de 0.06 convienne également pour différencier le signal voisé du non voisé, l'autocorrélation sur une plus grande période fait apparaître plus de maximums locaux, ce qui permet d'estimmer plus précisément la fréquence fondamentale du signal voisé. On trouve ainsi une fréquence du fondamental de 100 Hz environ.
+Finalement,  on choisit une durée d'échantillon de 0.16 secondes (figure \ref{classif3}), car bien que celle de 0.06s convienne également pour différencier le signal voisé du non voisé, l'autocorrélation sur une plus grande période fait apparaître plus de maximums locaux, ce qui permet d'estimmer plus précisément la fréquence fondamentale du signal voisé. On trouve ainsi une fréquence du fondamental de 100 Hz environ.
 
 \begin{figure}[h!]
 	\centering
@@ -251,11 +274,11 @@ Finalement,  on choisit une durée d'échantillon de 0.16 secondes (figure \ref{
 
 \FloatBarrier
 \newpage
-
+\clearpage
 \part{Aspects fréquentiels}
 
 \section{Échantillonnage}
-On réalise l'échantillonage d'un même signal de fréquence $f=500 \; Hz$ échantillonné à plusieurs fréquences différentes, le résultat obtenu est représenté dans les figures \ref{fig:echantillon1}, \ref{fig:echantillon2} et \ref{fig:echantillon3}.
+On réalise l'échantillonage d'un même signal de fréquence $f=500 \; Hz$ échantillonné à plusieurs fréquences différentes, le résultat obtenu est représenté dans les figures \ref{fig:echantillon1} (on se place à la limite de ce qu'impose le critère de Shannon), \ref{fig:echantillon2} (on échantillone avec une très grande fréquence d'échantillonage) et \ref{fig:echantillon3} (on échantillone avec une très faible fréquence d'échantillonage).
 
 \begin{figure}[h!]
 	\centering
@@ -279,6 +302,8 @@ On réalise l'échantillonage d'un même signal de fréquence $f=500 \; Hz$ éch
 	\label{fig:echantillon3}
 	\end{minipage}
 \end{figure}
+
+Visuellement, on constate que pour $f_e \gg f_{max}$, le signal est bien reconstitué, contrairement au cas $f_e \ll f_{min}$ (critère de Shannon).
 
 \FloatBarrier
 \section{La Transformée de Fourier discrète (TFD)}
@@ -313,7 +338,7 @@ On trace la densité spectrale d'énergie d'un signal voisé (figure \ref{fig:ds
 	\caption{Comparaison de la \bsc{dse} avec ou sans 0-padding}
 	\label{fig:dse_0_padding}
 \end{figure}
-On réalise ensuite une fonction de 0-padding. On compare la DSE pour un signal voisé, on se rend compte d'une amélioration de la précision spectrale sans modifier la résolution (l'ajout de zéro n'ajoute pas d'informations dans le spectre, le nombre de point utile reste le même).
+On réalise ensuite une fonction de 0-padding. On compare la DSE pour un signal voisé, la figure \ref{fig:dse_0_padding} montre une amélioration de la précision spectrale sans modifier la résolution (l'ajout de zéro n'ajoute pas d'informations dans le spectre).
 
 
 \FloatBarrier
@@ -328,9 +353,9 @@ On réalise ensuite une fonction de 0-padding. On compare la DSE pour un signal 
 \end{figure}
 
 On reprend notre signal ("a") (figure \ref{fig:cadence_signal}) pour évaluer l'influence de l'élévation et de la réduction de cadence.
-L'élévation de cadence (figure \ref{fig:élévation}) amène à une fréquence d'échantillonage plus élevée en insérant des zéros entre les intervalles temporels ce qui ajoute des composantes plus aigües à notre signal. La réduction de cadence (figure \ref{fig:réduction}) quant à elle supprime des échantillons et il est possible de ne plus respecter le critère de Shanon, impliquant du repliement spectrale perceptible au travers d'un son en général plus grave.
+L'élévation de cadence (figure \ref{fig:élévation}) amène à une fréquence d'échantillonage plus élevée en insérant des zéros entre les intervalles temporels, ce qui ajoute des composantes plus aigües à notre signal. La réduction de cadence (figure \ref{fig:réduction}) quant à elle supprime des échantillons et il est possible de ne plus respecter le critère de Shanon, impliquant du repliement spectrale perceptible au travers d'un son en général plus grave.
 
-La fonction 'resample' applique un filtre passe bas de manière à supprimer les composantes parasites, le bruit qu'on a en augmentant, diminiuant la cadence ce qui explique pourquoi on a un résultat moins bruité.
+En écoutant le résultat de la fonction \verb`resample`, on se rend compte que le résultat obtenu est de meilleur qualité. En effet, la fonction \verb`resample` applique un filtre passe bas de manière à supprimer les composantes parasites (le bruit qu'on a en augmentant ou diminuant la cadence), ce qui explique pourquoi on a un résultat moins bruité.
 
 \begin{figure}[h!]
 	\centering
@@ -352,7 +377,7 @@ La fonction 'resample' applique un filtre passe bas de manière à supprimer les
 \section{Analyse Spectrale}
 \subsection{Analyse d'une tranche de signal par TFD}
 
-La figure \ref{fig:hanning} montre qu'en réalisant la transformée de Fourier de la fenêtre de Hanning, on obtient un triangle de largeur $4/N$
+La figure \ref{fig:hanning} montre qu'en réalisant la transformée de Fourier de la fenêtre de Hanning, on obtient un triangle de largeur $4/N$.
   
 \begin{figure}[h!]
 	\centering
@@ -362,7 +387,7 @@ La figure \ref{fig:hanning} montre qu'en réalisant la transformée de Fourier d
 	\label{fig:hanning}
 \end{figure}
 
-On remarque grâce à la figure \ref{fig:hanning_sans_0p} que du fait de l'échantillonage de la transformée de Fourier, le second pic du graphe est tronqué. On retrouve ainsi le résultat du TD 4.
+On remarque grâce à la figure \ref{fig:hanning_sans_0p} que, du fait de l'échantillonage de la transformée de Fourier, le second pic du graphe est tronqué. On retrouve ainsi le résultat du TD 4.
 
 \begin{figure}[h!]
 	\centering
@@ -387,6 +412,7 @@ Après modification de la fonction d'analyse pour permettre à l'utilisateur de 
 		\label{fig:fen_signal}
 	\end{minipage}
 \end{figure}
+\FloatBarrier
 \begin{figure}[h!]
   	\begin{minipage}{\textwidth}
   		\centering
