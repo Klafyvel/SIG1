@@ -14,7 +14,6 @@
 \clearpage
 \listoffigures
 \newpage
-
 \initPage{TL - SIG1}{\today}{\bsc{Simon}, \bsc{Levy--Falk}}
 
 \part{Opérations de base sur les signaux}
@@ -113,8 +112,8 @@ En appliquant la fonction \verb`quantifie` pour $N=3$ et $N=8$ à un signal gén
 
 Pour déterminer le bruit de quantification, on calcule la différence entre le signal d'origine et le signal quantifié, et on en détermine la puissance moyenne. On calcule également la valeur théorique du bruit de quantification. On obtient
 
-\begin{tabular}{l|c|c|l}
-	Nombre de bits & Puissance moyenne théorique du bruit & Puissance moyenne mesurée du bruit & RSB en dB\\ 
+\begin{tabular}{r|c|c|l}
+	Nombre de bits & Puissance moy. théorique du bruit & Puissance moy. mesurée du bruit & RSB en dB\\ 
 	\hline
 	3 & $0.0013$ & $0.0063004$ & plop \\ 
 	\hline
@@ -377,7 +376,7 @@ En écoutant le résultat de la fonction \verb`resample`, on se rend compte que 
 \section{Analyse Spectrale}
 \subsection{Analyse d'une tranche de signal par TFD}
 
-La figure \ref{fig:hanning} montre qu'en réalisant la transformée de Fourier de la fenêtre de Hanning, on obtient un triangle de largeur $4/N$.
+Le module de la transformée de Fourier d'un signal réel étant paire, et puisque la figure \ref{fig:hanning} montre que l'on a environ un triangle dont un sommet est en $(0.13 \approx \frac{4}{2\times15},0)$ et un autre en $(0,14\approx \frac{ 2 \times 15}{4})$. On vérifie donc que le spectre de la fenêtre de Hanning peut s'approximer par un triangle de surface unité et de largeure $\frac{4}{N}$.
   
 \begin{figure}[h!]
 	\centering
