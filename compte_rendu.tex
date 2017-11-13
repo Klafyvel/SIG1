@@ -19,7 +19,7 @@
 \section*{Objectifs de l'étude de laboratoire}
 Cette étude de laboratoire va nous permettre de comparer les résultats obtenus lors de simulations avec les résultats attendus par la théorie dans le traitement du signal. Nous utiliserons le logiciel Matlab pour réaliser les différentes étapes de la chaîne de traitement du signal (échantillonnage, autocorrélation, TFD, réduction..). Nos applications seront uniquement basées sur des signaux audios acquis et échantillonés avec le logiciel Audacity. Matlab sera également utilisé à des fins de sauvegarde du signal audio (reconversion en ficher .wav), pour écouter les effets sur lesquels nous travaillerons.
 
-L'étude sont décomposés en quatre parties. La première a pour but de se familiariser avec les outils proposés par Matlab et le language de programmation, en effectuant des opérations de bases sur les signaux. Ensuite on verra comment classifier un signal en utilisant l'autocorrélation. Par la suite, on étudiera l'aspect fréquentiel du traitement du signal en évaluant le critère de Shanon, en caractérisant la TFD (Transformée de Fourier Discrète), en montrant les effets des réductions/augmentations de cadence ainsi que ceux des différents fenêtrages. La dernière partie sera une application de reconnaissance melodique mettant en oeuvre tout le savoir faire acquis lors de l'étude.
+L'étude sont décomposés en quatre parties. La première a pour but de se familiariser avec les outils proposés par Matlab et le language de programmation, en effectuant des opérations de bases sur les signaux. Ensuite on verra comment classifier un signal en utilisant l'autocorrélation. Par la suite, on étudiera l'aspect fréquentiel du traitement du signal en évaluant le critère de Shannon, en caractérisant la TFD (Transformée de Fourier Discrète), en montrant les effets des réductions/augmentations de cadence ainsi que ceux des différents fenêtrages. La dernière partie sera une application de reconnaissance melodique mettant en oeuvre tout le savoir faire acquis lors de l'étude.
 
 \newpage
 
@@ -379,7 +379,7 @@ On réalise ensuite une fonction de 0-padding. On compare la DSE pour un signal 
 \end{figure}
 
 On reprend notre signal ("a") (figure \ref{fig:cadence_signal}) pour évaluer l'influence de l'élévation et de la réduction de cadence.
-L'élévation de cadence (figure \ref{fig:élévation}) amène à une fréquence d'échantillonage plus élevée en insérant des zéros entre les intervalles temporels, ce qui ajoute des composantes plus aigües à notre signal. La réduction de cadence (figure \ref{fig:réduction}) quant à elle supprime des échantillons et il est possible de ne plus respecter le critère de Shanon, impliquant du repliement spectrale perceptible au travers d'un son en général plus grave.
+L'élévation de cadence (figure \ref{fig:élévation}) amène à une fréquence d'échantillonage plus élevée en insérant des zéros entre les intervalles temporels, ce qui ajoute des composantes plus aigües à notre signal. La réduction de cadence (figure \ref{fig:réduction}) quant à elle supprime des échantillons et il est possible de ne plus respecter le critère de Shannon, impliquant du repliement spectrale perceptible au travers d'un son en général plus grave.
 
 En écoutant le résultat de la fonction \verb`resample`, on se rend compte que le résultat obtenu est de meilleur qualité. En effet, la fonction \verb`resample` applique un filtre passe bas de manière à supprimer les composantes parasites (le bruit qu'on a en augmentant ou diminuant la cadence), ce qui explique pourquoi on a un résultat moins bruité.
 
@@ -473,7 +473,7 @@ Après modification de la fonction d'analyse pour permettre à l'utilisateur de 
 On remarque que le fenêtrage rectanglaire (figure \ref{fig:fen_rectangle}), s'il produit des pics de faible largeure devant ceux des autres fenêtres produit des lobes secondaires de hauteur importante. Les fenêtres de Hanning (figure \ref{fig:fen_hanning}), puis de Hamming (figure \ref{fig:fen_hamming}) et de Blackman (figure \ref{fig:fen_blackman}) produisent des lobes secondaires de hauteur de plus en plus faibles, mais au détriment de la largeure du lobe principal.
 
 \section*{Conclusion}
-Le respect du critère de Shanon est ESSENTIEL pour tout type de traitement du signal, être à la limite n'est pas judicieux. La TFD par la FFT permet d'obtenir le spectre fréquentiel de notre signal. Le 0-padding permet d'augmenter la précision sans altérer la résolution, car l'opération n'ajoute pas d'informations. Enfin, on connaît maintenant les effets des différents fenêtrages et les ceux de l'augmentation/réduction de cadence.
+Le respect du critère de Shannon est ESSENTIEL pour tout type de traitement du signal, être à la limite n'est pas judicieux. La TFD par la FFT permet d'obtenir le spectre fréquentiel de notre signal. Le 0-padding permet d'augmenter la précision sans altérer la résolution, car l'opération n'ajoute pas d'informations. Enfin, on connaît maintenant les effets des différents fenêtrages et les ceux de l'augmentation/réduction de cadence.
 
 \FloatBarrier
 \clearpage
@@ -608,5 +608,11 @@ Afin de mieux interpréter le résultat, on symbolise les barres de mesures par 
 \section*{Conclusion}
 
 Cette partie nous a permis d'utiliser en pratique les observations réalisée lors des parties précédentes. Ces observation nous permettent d'obtenir un algorithme qui reconnaît les notes jouées sur un enregistrement sonore, sans être perturbé par la présence d'un éventuel bruit. La limitation principale de cet algorithme se trouve dans le choix des paramètres. En effet, il faut connaître la plage de recherche des pitches. De plus il est nécessaire de connaître la durée minimale d'une note sur l'enregistrement. Une autre limitation est que cet algorithme ne détecte qu'une fréquence dans la note. Si on jouait un accord, il ne serait pas capable de s'en apercevoir. 
+
+\newpage
+\part{Conclusion générale}
+Ces travaux nous ont permis de mettre en oeuvre les outils vu en théorie à partir de logiciels dédiés au traitement du signal. La chaîne de traitement d'un signal débute par son acquisition suivi de l'échantillonnage (en pensant au critère de Shannon) et quantification (passage en numérique avec un CAN), ensuite vient le traitement. On a vu que celui-ci présentait bien en fréquentiel surtout avec la TFD, on peut trouver les informations souhaitées avec différentes opérations (0-padding, réduction de cadence, fenêtrage..). Le traitement s'effectuera principalement en réalisant plusieurs troncatures et en analysant ces dernières. Une fois les données trouvées, vient l'étape de la reconstitution, dont la qualité dépend des facteurs précédemments choisis.
+
+Toutes ces opérations reposent sur des calculs à l'aide d'un ordinateur, des DSP\footnote{Digital Signal Processor} ont été conçus afin d'augmenter la rapidité des calculs. Il sera préférable de veiller à l'optimisation des programmes informatiques selon le logiciel utilisé pour ne pas perdre de temps.
 
 \end{document}
