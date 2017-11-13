@@ -5,8 +5,8 @@
 \usepackage{MyPack2}
 \geometry{top=2cm, bottom=2cm, left=2cm, right=2cm}
 \title{\bsc{SIG} 1}
-\author{Binôme A11 \\ \bsc{Simon} Léo, \bsc{Levy--Falk} Hugo}
-\date{\today}
+\author{Binôme A11 \\ \bsc{Simon} Léo, \bsc{Levy--Falk} Hugo \\ Supélec, promo 2020}
+\date{14 Novembre 2017}
 
 \begin{document}
 \maketitle
@@ -16,9 +16,17 @@
 \newpage
 \initPage{TL - SIG1}{\today}{\bsc{Simon}, \bsc{Levy--Falk}}
 
+\section*{Objectifs de l'étude de laboratoire}
+Cette étude de laboratoire va nous permettre de comparer les résultats obtenus lors de simulations avec les résultats attendus par la théorie dans le traitement du signal. Nous utiliserons le logiciel Matlab pour réaliser les différentes étapes de la chaîne de traitement du signal (échantillonnage, autocorrélation, TFD, réduction..). Nos applications seront uniquement basées sur des signaux audios acquis et échantillonés avec le logiciel Audacity. Matlab sera également utilisé à des fins de sauvegarde du signal audio (reconversion en ficher .wav), pour écouter les effets sur lesquels nous travaillerons.
+
+L'étude sont décomposés en quatre parties. La première a pour but de se familiariser avec les outils proposés par Matlab et le language de programmation, en effectuant des opérations de bases sur les signaux. Ensuite on verra comment classifier un signal en utilisant l'autocorrélation. Par la suite, on étudiera l'aspect fréquentiel du traitement du signal en évaluant le critère de Shanon, en caractérisant la TFD (Transformée de Fourier Discrète), en montrant les effets des réductions/augmentations de cadence ainsi que ceux des différents fenêtrages. La dernière partie sera une application de reconnaissance melodique mettant en oeuvre tout le savoir faire acquis lors de l'étude.
+
+\newpage
+
 \part{Opérations de base sur les signaux}
 
-Dans cette première partie, notre objectif est de définir quelques fonctions de calcul de base sur les signaux, afin de découvrir les outils que propose Matlab.
+\section*{Objectifs de la partie}
+Dans cette première partie, notre objectif est de définir quelques fonctions de calcul de base sur les signaux, afin de découvrir les outils que propose Matlab. On développera l'effet de la quantification sur notre signal de base et les effets sur l'énergie de notre signal. Puis nous verrons l'influence de cette opération à l'écoute des signaux traités.
 
 \section{Signal numérique de synthèse}
 
@@ -115,13 +123,14 @@ Pour déterminer le bruit de quantification, on calcule la différence entre le 
 \begin{tabular}{r|c|c|l}
 	Nombre de bits & Puissance moy. théorique du bruit & Puissance moy. mesurée du bruit & RSB en dB\\ 
 	\hline
-	3 & $0.0013$ & $0.0063004$ & plop \\ 
+	3 & $0.0013$ & $0.0063004$ & 19 \\ 
 	\hline
-	8 & $1.272 \times 10^{-6}$ & $4.6464\times 10^{-6}$ & plop
+	8 & $1.272 \times 10^{-6}$ & $4.6464\times 10^{-6}$ & 50
 \end{tabular} 
 % TODO: SIGNAL SUR BRUIT
 
-On remarque tout d'abord que les valeurs mesurées de la puissance moyenne du bruit de quantification sont proches de celles prédites par la théorie. On remarque que l'échantillonnage à 8 bits est bien plus efficace, bien que la valeur théorique soit plus faible que celle calculée.
+On remarque tout d'abord que les valeurs mesurées de la puissance moyenne du bruit de quantification sont proches de celles prédites par la théorie. On remarque que l'échantillonnage à 8 bits est bien plus efficace, bien que la valeur théorique soit plus faible que celle calculée. La théorie indique qu'un bit de quantification apporte +6dB au RSB, ce qui est validé par les valeurs trouvées (5 bits d'écart, donc 30dB et on a 29dB).
+
 
 \FloatBarrier
 \section{ Signal audio}
@@ -158,12 +167,16 @@ Les figures \ref{sonQuantifie1} et \ref{sonQuantifie2} donnent une représentati
 
 En observant le chronogramme du signal, on distingue les deux mots, ce qui permet de repérer l'instant $t$ où couper le signal pour séparer ces deux mots. L'indice correspondant du vecteur dans lequel est stocké le signal est $k=t*f_e$ où $f_e$ est la fréquence d'échantillonage.
 
+\section*{Conclusion}
+Cette partie nous a permis de nous familiariser avec les principales fonctions de traitement du signal ainsi que leur utilisation dans Matlab. On note l'importance de la fréquence d'échantillonage et de la quantification (ce qui implique l'importance de l'appréciation de la dynamique du signal étudié) pour un bon traitement et une bonne restitution. 
+
 \FloatBarrier
 \newpage
 \clearpage
 \part{ Classification des signaux}
 
-Le but de cette partie est de classifier les signaux, notamment en utilisant l'autocorrélation.
+\section*{Objectifs de la partie}
+Le but de cette partie est de classifier les signaux, notamment en utilisant l'autocorrélation. Cette dernière traduit les ressemblances du signal avec lui-même, on peut donc en tirer la fréquence fondamentale ou en déduire la stationnarité du signal (signal voisé ou non voisé). On utilisera le logiciel 01com connecté à une maquette physique (automatique) de génération de signaux pour classer divers signaux simples.
 
 \section{ Exemple de calcul théorique}
 
@@ -209,6 +222,12 @@ Nous n'avions d'abord tracé que la partie positive, avant de nous rendre compte
 On obtient un résultat différent du résultat théorique car le support de notre signal est fini, ce qui donne un cosinus amorti de manière symétrique et non un simple cosinus.
 
 \section{ Application à la classification de quelques signaux simples}
+
+
+Dans cette section, on fait l'acquisition de signaux simples à l'aide du logiciel 01Com et de la maquette : 
+- un signal sinusoïdale de fréquence 200Hz sur plusieurs périodes
+- un signal triangulaire de paramètres identiques
+- un signal de bruit 
 
 Lorsque le signal se "répète" au cours du temps son autocorrélation est semblable sur de courtes périodes (reproduction du même motif au cours des périodes), on dit alors que le signal est stationnaire. Par contre si son autocorrélation est presque nulle, cela veut dire qu'il n'y a pas reproduction des motifs au cour des périodes et donc que le signal est non stationnaire.
 
@@ -271,10 +290,18 @@ Finalement,  on choisit une durée d'échantillon de 0.16 secondes (figure \ref{
 	\label{classif3}
 \end{figure}
 
+\section*{Conclusion}
+L'outil d'autocorrélation permet de classer un signal. Le choix de la tranche à autocorréler est très importante pour ne pas perdre d'informations. Nous savons maintenant traiter un signal afin de déceler la fréquence (note en musique par exemple) de celui-ci sur de petites trames et de savoir quelle est le type de signal (voisé ou non voisé pour le traitement de la parole).
+
 \FloatBarrier
 \newpage
 \clearpage
 \part{Aspects fréquentiels}
+
+\section*{Objectifs de la partie}
+La tranformée de Fourier permet de passer de l'environnement temporel à celui fréquentiel. On utilisera la TFD (Tranformée de Fourier Discrète) pour une représentation discrète du signal échantilloné qui est en général calculé en utilisant la FFT (Fast Fourier Transform) dans tout logiciel de traitement du signal, afin de réduire le nombre de calculs. 
+L'étude commencera par l'évaluation du critère de Shannon sur la reconstitution du signal analogique à partir du signal échantilloné. Ensuite on vérifiera l'utilité de la TFD, du 0-padding et l'influence de la réduction/augmentation de cadence sur notre signal reconstitué à l'écoute. On étudiera enfin les effets des différents fenêtrages sur l'aspect fréquentiel dans l'identification des composantes fréquentiels.
+
 
 \section{Échantillonnage}
 On réalise l'échantillonage d'un même signal de fréquence $f=500 \; Hz$ échantillonné à plusieurs fréquences différentes, le résultat obtenu est représenté dans les figures \ref{fig:echantillon1} (on se place à la limite de ce qu'impose le critère de Shannon), \ref{fig:echantillon2} (on échantillone avec une très grande fréquence d'échantillonage) et \ref{fig:echantillon3} (on échantillone avec une très faible fréquence d'échantillonage).
@@ -445,10 +472,14 @@ Après modification de la fonction d'analyse pour permettre à l'utilisateur de 
 
 On remarque que le fenêtrage rectanglaire (figure \ref{fig:fen_rectangle}), s'il produit des pics de faible largeure devant ceux des autres fenêtres produit des lobes secondaires de hauteur importante. Les fenêtres de Hanning (figure \ref{fig:fen_hanning}), puis de Hamming (figure \ref{fig:fen_hamming}) et de Blackman (figure \ref{fig:fen_blackman}) produisent des lobes secondaires de hauteur de plus en plus faibles, mais au détriment de la largeure du lobe principal.
 
+\section*{Conclusion}
+Le respect du critère de Shanon est ESSENTIEL pour tout type de traitement du signal, être à la limite n'est pas judicieux. La TFD par la FFT permet d'obtenir le spectre fréquentiel de notre signal. Le 0-padding permet d'augmenter la précision sans altérer la résolution, car l'opération n'ajoute pas d'informations. Enfin, on connaît maintenant les effets des différents fenêtrages et les ceux de l'augmentation/réduction de cadence.
+
 \FloatBarrier
 \clearpage
 \part{Application : détection de pitch}
 
+\section*{Objectifs de la partie}
 Le but de cette partie est de réaliser une fonction capable de détecter la note jouée lors d'un enregistrement sonore. Pour cela on va découper le signal en tranches réparties régulièrement sur toute la durée de l'enregistrement.
 
 \section{Détection de signal voisé}
@@ -574,5 +605,8 @@ Afin de mieux interpréter le résultat, on symbolise les barres de mesures par 
 	\label{fig:notes}
 \end{figure}
 
+\section*{Conclusion}
+
+Cette partie nous a permis d'utiliser en pratique les observations réalisée lors des parties précédentes. Ces observation nous permettent d'obtenir un algorithme qui reconnaît les notes jouées sur un enregistrement sonore, sans être perturbé par la présence d'un éventuel bruit. La limitation principale de cet algorithme se trouve dans le choix des paramètres. En effet, il faut connaître la plage de recherche des pitches. De plus il est nécessaire de connaître la durée minimale d'une note sur l'enregistrement. Une autre limitation est que cet algorithme ne détecte qu'une fréquence dans la note. Si on jouait un accord, il ne serait pas capable de s'en apercevoir. 
 
 \end{document}
